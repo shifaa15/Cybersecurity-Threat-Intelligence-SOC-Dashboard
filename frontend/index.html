@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentry Deck — SOC Threat Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◈</span>
+    <span class="brand-name">Sentry Deck</span>
+    <span class="brand-sub">SOC Threat Intelligence</span>
+  </div>
+  <div class="topbar-status">
+    <span class="live-dot" id="conn-dot"></span>
+    <span id="conn-label">connecting…</span>
+    <span class="divider">/</span>
+    <span id="clock" class="mono"></span>
+  </div>
+</header>
+
+<main class="grid">
+
+  <!-- Stat strip -->
+  <section class="stat-strip">
+    <div class="stat-tile" data-tone="neutral">
+      <div class="stat-value mono" id="stat-total">0</div>
+      <div class="stat-label">Events processed</div>
+    </div>
+    <div class="stat-tile" data-tone="violet">
+      <div class="stat-value mono" id="stat-incidents">0</div>
+      <div class="stat-label">Open incidents</div>
+    </div>
+    <div class="stat-tile" data-tone="amber">
+      <div class="stat-value mono" id="stat-avg">0</div>
+      <div class="stat-label">Avg severity score</div>
+    </div>
+    <div class="stat-tile" data-tone="critical">
+      <div class="stat-value mono" id="stat-critical">0</div>
+      <div class="stat-label">Critical alerts</div>
+    </div>
+  </section>
+
+  <!-- Attack timeline -->
+  <section class="panel panel-timeline">
+    <div class="panel-head">
+      <h2>Attack timeline</h2>
+      <p>Event volume by severity, last 30 minutes</p>
+    </div>
+    <div class="panel-body">
+      <canvas id="timeline-chart" height="150"></canvas>
+    </div>
+  </section>
+
+  <!-- Severity distribution -->
+  <section class="panel panel-severity">
+    <div class="panel-head">
+      <h2>Severity mix</h2>
+      <p>All events this session</p>
+    </div>
+    <div class="panel-body">
+      <canvas id="severity-chart"></canvas>
+    </div>
+  </section>
+
+  <!-- MITRE ATT&CK matrix -->
+  <section class="panel panel-mitre">
+    <div class="panel-head">
+      <h2>MITRE ATT&amp;CK coverage</h2>
+      <p>Observed techniques mapped to kill-chain tactics — darker cells, more hits</p>
+    </div>
+    <div class="panel-body">
+      <div id="mitre-matrix" class="mitre-matrix"></div>
+    </div>
+  </section>
+
+  <!-- Incidents -->
+  <section class="panel panel-incidents">
+    <div class="panel-head">
+      <h2>Correlated incidents</h2>
+      <p>Chains of related events grouped by source and asset</p>
+    </div>
+    <div class="panel-body">
+      <div id="incident-list" class="incident-list"></div>
+    </div>
+  </section>
+
+  <!-- Live event feed -->
+  <section class="panel panel-feed">
+    <div class="panel-head panel-head-row">
+      <div>
+        <h2>Live event stream</h2>
+        <p>Enriched telemetry as it's ingested</p>
+      </div>
+      <div class="feed-controls">
+        <input id="search-input" class="input" type="text" placeholder="Search asset, IP, technique…" />
+        <select id="severity-filter" class="input">
+          <option value="all">All severities</option>
+          <option value="Critical">Critical</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div id="event-feed" class="event-feed"></div>
+    </div>
+  </section>
+
+</main>
+
+<div id="drawer" class="drawer">
+  <div class="drawer-head">
+    <h3 id="drawer-title">Incident</h3>
+    <button id="drawer-close" class="icon-btn">✕</button>
+  </div>
+  <div id="drawer-body" class="drawer-body"></div>
+</div>
+<div id="drawer-overlay" class="drawer-overlay"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
