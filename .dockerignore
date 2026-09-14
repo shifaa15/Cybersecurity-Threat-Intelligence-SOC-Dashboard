@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+backend/soc.db
+.git
+.gitignore
+*.md
